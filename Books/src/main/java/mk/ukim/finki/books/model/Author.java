@@ -15,7 +15,7 @@ public class Author {
 
     private String name;
     private String biography;
-    private String email
+    private String email;
 
 
     public Author() {
