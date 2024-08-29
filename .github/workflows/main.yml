@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -24,13 +30,13 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean package
-        working-directory: ./Books  
+        working-directory: ./Books
 
       - name: Build Docker image
         id: build
         uses: docker/build-push-action@v3
         with:
-          context: ./Books y
+          context: ./Books
           push: false
           tags: lynxeen/library_docker_k8s:latest
 
@@ -38,7 +44,7 @@ jobs:
         if: steps.build.outcome == 'success'
         uses: docker/build-push-action@v3
         with:
-          context: ./Books 
+          context: ./Books
           push: true
           tags: lynxeen/library_docker_k8s:latest
 
