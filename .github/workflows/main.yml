@@ -26,7 +26,8 @@ jobs:
         id: build
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./Books 
+          dockerfile: ./Books/Dockerfile  
           push: false
           tags: lynxeen/library_docker_k8s:latest
 
@@ -34,7 +35,8 @@ jobs:
         if: steps.build.outcome == 'success'
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./Books 
+          dockerfile: ./Books/Dockerfile  
           push: true
           tags: lynxeen/library_docker_k8s:latest
 
