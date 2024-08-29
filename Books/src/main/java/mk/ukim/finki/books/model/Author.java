@@ -13,6 +13,7 @@ public class Author {
     @Id
     private String id;
 
+    // Name
     private String name;
     private String biography;
     private String email;
