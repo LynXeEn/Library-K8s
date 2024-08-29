@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-push:
@@ -12,6 +12,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn clean package
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -27,7 +36,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./Books 
-          dockerfile: ./Books/Dockerfile  
           push: false
           tags: lynxeen/library_docker_k8s:latest
 
@@ -36,7 +44,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./Books 
-          dockerfile: ./Books/Dockerfile  
           push: true
           tags: lynxeen/library_docker_k8s:latest
 
