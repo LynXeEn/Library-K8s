@@ -32,13 +32,17 @@ jobs:
         run: mvn clean package
         working-directory: ./Books
 
+      - name: Get commit SHA
+        id: commit
+        run: echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Build Docker image
         id: build
         uses: docker/build-push-action@v3
         with:
           context: ./Books
           push: false
-          tags: lynxeen/library_docker_k8s:latest
+          tags: lynxeen/library_docker_k8s:${{ env.VERSION }}
 
       - name: Push Docker image
         if: steps.build.outcome == 'success'
@@ -46,7 +50,7 @@ jobs:
         with:
           context: ./Books
           push: true
-          tags: lynxeen/library_docker_k8s:latest
+          tags: lynxeen/library_docker_k8s:${{ env.VERSION }}
 
       - name: Notify Build Status
         run: echo "Build and push successful!"
